@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ALLOWED_SETTINGS = ['lastfm']
+ALLOWED_SETTINGS = ['lastfm', 'location']
 
 BOT.command :profile do |event, command, key, value|
   user = User.find_or_create(discord_id: event.author.id)

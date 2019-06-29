@@ -4,6 +4,8 @@ require 'discordrb'
 require 'dotenv'
 require 'sequel'
 require 'lastfm'
+require 'forecast_io'
+require 'geocoder'
 
 Dotenv.load
 Dir[File.join(__dir__, 'support', '*.rb')].each { |file| require file }
