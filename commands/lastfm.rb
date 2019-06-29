@@ -1,29 +1,43 @@
 # frozen_string_literal: true
 
 lastfm = Lastfm.new(ENV['LASTFM_KEY'], ENV['LASTFM_SECRET'])
+lastfm_icon_url = 'https://www.last.fm/static/images/lastfm_avatar_twitter.66cd2c48ce03.png'
 
-BOT.command :lastfm, aliases: [:np] do |event, text|
-  user = User.find_or_create(discord_id: event.author.id)
-  lastfm_username = user.settings_dataset.first(key: 'lastfm')&.value
+BOT.command :lastfm, aliases: [:np, :n] do |event, lookup|
+  if lookup
+    lastfm_username = lookup
+  else
+    user = User.find_or_create(discord_id: event.author.id)
+    lastfm_username = user.settings_dataset.first(key: 'lastfm')&.value
+  end
 
   if lastfm_username
     lastfm_user = lastfm.user.get_info(user: lastfm_username)
     latest = lastfm.user.get_recent_tracks(user: lastfm_username, limit: 1)
-    user_info = lastfm.track.get_info(track: latest['name'], artist: latest['artist']['content'], user: lastfm_username)
-    event.channel.send_embed do |embed|
-      embed.url = latest['url']
-      embed.timestamp = Time.at(latest['date']['uts'].to_i)
-      embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: latest['image'].last['content'])
-      embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Scrobbled", icon_url: "https://www.last.fm/static/images/lastfm_avatar_twitter.66cd2c48ce03.png")
-      embed.add_field(name: "Track", value: latest['name'], inline: true)
-      embed.add_field(name: "Album", value: latest['album']['content'], inline: true)
-      embed.add_field(name: "Artist", value: latest['artist']['content'], inline: true)
-      embed.add_field(name: "Play Count", value: user_info['userplaycount'], inline: true)
+    latest = latest.first if latest.is_a? Array
+    if latest
+      user_info = lastfm.track.get_info(track: latest['name'], artist: latest['artist']['content'], user: lastfm_username)
+      event.channel.send_embed do |embed|
+        embed.color = event.author.colour
+        embed.url = latest['url']
+        embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: latest['image'].last['content'])
+        if latest['date']
+          embed.timestamp = Time.at(latest['date']['uts'].to_i)
+          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Scrobbled", icon_url: lastfm_icon_url)
+        else
+          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Listening now", icon_url: lastfm_icon_url)
+        end
+        embed.add_field(name: "Track", value: latest['name'], inline: true)
+        embed.add_field(name: "Album", value: latest['album']['content'], inline: true)
+        embed.add_field(name: "Artist", value: latest['artist']['content'], inline: true)
+        embed.add_field(name: "Play Count", value: user_info['userplaycount'], inline: true)
+      end
+    else
+      'Couldn\'t find last playing information :('
     end
   else
     'Please set your Last.fm username using `.profile set lastfm <username>`'
   end
-  
 end
 
 # {
