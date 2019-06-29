@@ -3,6 +3,7 @@
 require 'discordrb'
 require 'dotenv'
 require 'sequel'
+require 'lastfm'
 
 Dotenv.load
 Dir[File.join(__dir__, 'support', '*.rb')].each { |file| require file }
