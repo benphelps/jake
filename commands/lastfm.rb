@@ -3,7 +3,7 @@
 lastfm = Lastfm.new(ENV['LASTFM_KEY'], ENV['LASTFM_SECRET'])
 lastfm_icon_url = 'https://www.last.fm/static/images/lastfm_avatar_twitter.66cd2c48ce03.png'
 
-BOT.command :lastfm, aliases: [:np, :n] do |event, lookup|
+BOT.command :lastfm, aliases: [:np, :n], description: 'Display now playinf information for your profiles Last.fm username.' do |event, lookup|
   if lookup
     lastfm_username = lookup
   else
