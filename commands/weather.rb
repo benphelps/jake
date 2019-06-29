@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ForecastIO.api_key = 'a0f31729fed526f56893bedc5d93476a'
+ForecastIO.api_key = ENV['DARKSKY_KEY']
 
 def degrees(num)
   num.round.to_s + ' °'
