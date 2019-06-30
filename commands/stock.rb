@@ -21,13 +21,13 @@ BOT.command :stock, aliases: [:quote, :q], description: 'Lookup current stock pr
       embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: logo.url) if logo&.url
       embed.timestamp = Time.at((quote.latest_update / 1000).to_i)
       embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: company.exchange)
-      embed.add_field(name: "Price", value: number_to_currency(quote.latest_price), inline: true)
-      embed.add_field(name: "Change", value: quote.change_percent_s, inline: true)
-      embed.add_field(name: "High", value: number_to_currency(quote.high), inline: true)
-      embed.add_field(name: "Low", value: number_to_currency(quote.low), inline: true)
+      embed.add_field(name: 'Price', value: number_to_currency(quote.latest_price), inline: true)
+      embed.add_field(name: 'Change', value: quote.change_percent_s, inline: true)
+      embed.add_field(name: 'High', value: number_to_currency(quote.high), inline: true)
+      embed.add_field(name: 'Low', value: number_to_currency(quote.low), inline: true)
     end
   else
-    'Couldn\'t find that company'
+    "Couldn't find that company"
   end
 end
 

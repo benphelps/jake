@@ -38,7 +38,7 @@ BOT.command :weather, aliases: [:we, :w], description: 'Display current weather 
       "Failed to geocode the location: #{location}"
     end
   else
-    'No location provided, set your location with `.profile set location <location>`'
+    "No location provided, set using `#{BOT.prefix}profile set location <location>`"
   end
 
 

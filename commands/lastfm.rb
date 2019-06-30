@@ -23,20 +23,20 @@ BOT.command :lastfm, aliases: [:np, :n], description: 'Display now playinf infor
         embed.thumbnail = Discordrb::Webhooks::EmbedThumbnail.new(url: latest['image'].last['content'])
         if latest['date']
           embed.timestamp = Time.at(latest['date']['uts'].to_i)
-          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Scrobbled", icon_url: lastfm_icon_url)
+          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Scrobbled', icon_url: lastfm_icon_url)
         else
-          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: "Listening now", icon_url: lastfm_icon_url)
+          embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: 'Listening now', icon_url: lastfm_icon_url)
         end
-        embed.add_field(name: "Track", value: latest['name'], inline: true)
-        embed.add_field(name: "Album", value: latest['album']['content'], inline: true)
-        embed.add_field(name: "Artist", value: latest['artist']['content'], inline: true)
-        embed.add_field(name: "Play Count", value: user_info['userplaycount'], inline: true)
+        embed.add_field(name: 'Track', value: latest['name'], inline: true)
+        embed.add_field(name: 'Album', value: latest['album']['content'], inline: true)
+        embed.add_field(name: 'Artist', value: latest['artist']['content'], inline: true)
+        embed.add_field(name: 'Play Count', value: user_info['userplaycount'], inline: true)
       end
     else
-      'Couldn\'t find last playing information :('
+      "Couldn't find last playing information :("
     end
   else
-    'Please set your Last.fm username using `.profile set lastfm <username>`'
+    "No Last.fm username provided, set using `#{BOT.prefix}profile set lastfm <username>`"
   end
 end
 
