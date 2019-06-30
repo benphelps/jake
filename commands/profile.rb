@@ -16,6 +16,7 @@ BOT.command :profile, description: 'Set or display profile information.' do |eve
     end
   else
     event.channel.send_embed do |embed|
+      embed.color = event.author.colour
       embed.title = "Profile Settings for: #{event.author.name}"
       user.settings.each do |setting|
         embed.add_field(name: setting.key, value: setting.value)

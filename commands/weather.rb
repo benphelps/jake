@@ -26,6 +26,7 @@ BOT.command :weather, aliases: [:we, :w], description: 'Display current weather 
 
       if forecast
         event.channel.send_embed do |embed|
+          embed.color = event.author.colour
           embed.title = geocoded.data['display_name']
           embed.description = forecast.summary
           embed.add_field(name: "Temp", value: degrees(forecast.temperature), inline: true)
