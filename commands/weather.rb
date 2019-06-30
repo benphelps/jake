@@ -35,7 +35,7 @@ BOT.command :weather, aliases: [:we, :w], description: 'Display current weather 
       end
     end
   else
-    "Failed to geocode the location: #{}"
+    "Failed to geocode the location: #{location}"
   end
 end
 
