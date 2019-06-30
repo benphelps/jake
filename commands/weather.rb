@@ -10,9 +10,9 @@ def percent(num)
   (num * 100.0).round.to_s + '%'
 end
 
-BOT.command :weather, aliases: [:we, :w], description: 'Display current weather information for your profiles location.' do |event, lookup|
+BOT.command :weather, aliases: [:we, :w], description: 'Display current weather information for your profiles location.' do |event, *lookup|
   if lookup
-    geocoded = Geocoder.search(lookup)&.first
+    geocoded = Geocoder.search(lookup.join(' '))&.first
   else
     user = User.find_or_create(discord_id: event.author.id)
     location = user.settings_dataset.first(key: 'location')&.value

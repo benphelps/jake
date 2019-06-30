@@ -2,7 +2,8 @@
 
 ALLOWED_SETTINGS = ['lastfm', 'location']
 
-BOT.command :profile, description: 'Set or display profile information.' do |event, command, key, value|
+BOT.command :profile, description: 'Set or display profile information.' do |event, command, key, *value|
+  value = value.join(' ')
   user = User.find_or_create(discord_id: event.author.id)
   case command
   when 'set'
