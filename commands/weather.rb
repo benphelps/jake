@@ -11,32 +11,37 @@ def percent(num)
 end
 
 BOT.command :weather, aliases: [:we, :w], description: 'Display current weather information for your profiles location.' do |event, *lookup|
-  if lookup
+  unless lookup.empty?
     location = lookup.join(' ')
   else
     user = User.find_or_create(discord_id: event.author.id)
     location = user.settings_dataset.first(key: 'location')&.value
   end
 
-  geocoded = Geocoder.search(location)&.first
+  if location
+    geocoded = Geocoder.search(location)&.first
+    if geocoded
+      lat, long = geocoded.coordinates
+      forecast = ForecastIO.forecast(lat, long)&.currently
 
-  if geocoded
-    lat, long = geocoded.coordinates
-    forecast = ForecastIO.forecast(lat, long)&.currently
-
-    if forecast
-      event.channel.send_embed do |embed|
-        embed.title = geocoded.data['display_name']
-        embed.description = forecast.summary
-        embed.add_field(name: "Temp", value: degrees(forecast.temperature), inline: true)
-        embed.add_field(name: "Feels Like", value: degrees(forecast.apparentTemperature), inline: true)
-        embed.add_field(name: "Humidity", value: percent(forecast.humidity), inline: true)
-        embed.add_field(name: "Chance of Rain", value: percent(forecast.precipProbability), inline: true)
+      if forecast
+        event.channel.send_embed do |embed|
+          embed.title = geocoded.data['display_name']
+          embed.description = forecast.summary
+          embed.add_field(name: "Temp", value: degrees(forecast.temperature), inline: true)
+          embed.add_field(name: "Feels Like", value: degrees(forecast.apparentTemperature), inline: true)
+          embed.add_field(name: "Humidity", value: percent(forecast.humidity), inline: true)
+          embed.add_field(name: "Chance of Rain", value: percent(forecast.precipProbability), inline: true)
+        end
       end
+    else
+      "Failed to geocode the location: #{location}"
     end
   else
-    "Failed to geocode the location: #{location}"
+    'No location provided, set your location with `.profile set location <location>`'
   end
+
+
 end
 
 # <Geocoder::Result::Nominatim:0x00007f9d75008f10
