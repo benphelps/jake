@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Setup our DB connection
 DB = Sequel.connect('sqlite://jake.db')
 
 # Load the migration extension and run migrations
