@@ -12,12 +12,13 @@ end
 
 BOT.command :weather, aliases: [:we, :w], description: 'Display current weather information for your profiles location.' do |event, *lookup|
   if lookup
-    geocoded = Geocoder.search(lookup.join(' '))&.first
+    location = lookup.join(' ')
   else
     user = User.find_or_create(discord_id: event.author.id)
     location = user.settings_dataset.first(key: 'location')&.value
-    geocoded = Geocoder.search(lookup)&.first
   end
+
+  geocoded = Geocoder.search(location)&.first
 
   if geocoded
     lat, long = geocoded.coordinates
@@ -33,6 +34,8 @@ BOT.command :weather, aliases: [:we, :w], description: 'Display current weather 
         embed.add_field(name: "Chance of Rain", value: percent(forecast.precipProbability), inline: true)
       end
     end
+  else
+    "Failed to geocode the location: #{}"
   end
 end
 
