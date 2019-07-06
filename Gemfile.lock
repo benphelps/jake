@@ -24,6 +24,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    awesome_print (1.8.0)
     builder (3.2.3)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
@@ -36,7 +37,7 @@ GEM
       websocket-client-simple (>= 0.3.0)
     discordrb-webhooks (3.3.0)
       rest-client (>= 2.1.0.rc1)
-    domain_name (0.5.20180417)
+    domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.4)
     erubi (1.8.0)
@@ -52,9 +53,16 @@ GEM
       multi_json
     geocoder (1.5.1)
     hashie (3.6.0)
+    http (3.3.0)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.0)
+      http_parser.rb (~> 0.6.0)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    http-form_data (2.1.1)
+    http_parser.rb (0.6.0)
     httparty (0.17.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -116,7 +124,9 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    sequel (5.21.0)
+    scryfall (0.2.8)
+      http (~> 3)
+    sequel (5.22.0)
     sqlite3 (1.4.1)
     thread_safe (0.3.6)
     tzinfo (1.2.5)
@@ -135,6 +145,7 @@ PLATFORMS
 
 DEPENDENCIES
   actionview
+  awesome_print
   discordrb
   dotenv
   forecast_io
@@ -142,6 +153,7 @@ DEPENDENCIES
   iex-ruby-client
   lastfm
   rspotify!
+  scryfall
   sequel
   sqlite3
 
